@@ -50,9 +50,9 @@ void GoCraziBall ( )
     //Ball ball4 = { .x = 10, .y = 10, .vx = 28, .vy = 10,
     //               .radius = 43, .color = TX_GREEN, .colorOkr = TX_LIGHTGREEN};
 
-    int ax = 2, ay = 1;
+    double ax = 2, ay = 1;
 
-    int dt = 1;
+    double dt = 0.8;
 
     while (!txGetAsyncKeyState (VK_ESCAPE))
         {
@@ -94,8 +94,8 @@ void GoCraziBall ( )
 
         if (Est_li_Bam (ball2.x, ball2.y, ball3.x, ball3.y, ball2.radius, ball3.radius))
             {
-            Bam_Balls (ball3.x, ball3.y, &ball3.vx, &ball3.vy,
-                       ball2.x, ball2.y, &ball2.vx, &ball2.vy);
+            Bam_Balls (ball2.x, ball2.y, &ball2.vx, &ball2.vy,
+                       ball3.x, ball3.y, &ball3.vx, &ball3.vy);
             //Bam_Balls1 (&ball2.x, &ball2.y, &ball2.vx, &ball2.vy, ball2.radius,
             //            &ball3.x, &ball3.y, &ball3.vx, &ball3.vy, ball3.radius);
             }
@@ -111,7 +111,7 @@ void GoCraziBall ( )
 
         txSetFillColor (TX_GRAY);
 
-        txSleep (10);
+        txSleep (5);
         }
     }
 //--------------------------------------------------------------------------------------------
@@ -200,25 +200,25 @@ void PhisicBalls (struct Ball* ball, double ax, double ay, double dt)
     if (ball -> x >= 1000 - ball -> radius)
         {
         ball -> vx = - (ball -> vx);
-        ball -> x  = ball -> x - ball -> radius;
+        ball -> x  = (1000 - ball -> radius) - (ball -> x - (1000 - ball -> radius)) * 2;
         }
 
     if (ball -> y >=  700 - ball -> radius)
         {
         ball -> vy = - (ball -> vy);
-        ball -> y  = ball -> y - ball -> radius;
+        ball -> y  = (700 - ball -> radius) - (ball -> y - (700 - ball -> radius)) * 2;
         }
 
     if (ball -> x <= 0 + ball -> radius)
         {
         ball -> vx = - (ball -> vx);
-        ball -> x  = 0 + ball -> radius; //+ 2 * (0 - ball -> x);
+        ball -> x  = (0 + ball -> radius) + ((0 + ball -> radius) - ball -> x) * 2;
         }
 
     if (ball -> y <= 0 + ball -> radius)
         {
         ball -> vy = - (ball -> vy);
-        ball -> y  = 0 + ball -> radius + 2 * (0 - ball -> y);
+        ball -> y  = (0 + ball -> radius) + ((0 + ball -> radius) - ball -> y) * 2;
         }
     txSleep (10);
     }
